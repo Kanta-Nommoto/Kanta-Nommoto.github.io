@@ -1,68 +1,138 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>宇宙計測研究室</title>
-  <link rel="stylesheet" href="assets/style.css">
-  <meta name="description" content="法政大学 宇宙計測研究室（教授 佐藤 修一）の紹介ページ">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宇宙計測研究室 - 法政大学</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="stars"></div>
-  <header class="site-header">
-    <div class="header-glow"></div>
-    <h1>🚀 宇宙計測研究室</h1>
-    <p class="subtitle">教授　佐藤 修一 — Shuichi SATO</p>
-    <p class="research-essence">重力波で探る宇宙の謎</p>
-  </header>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>宇宙計測研究室</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">ホーム</a></li>
+                <li><a href="#about" class="nav-link">研究概要</a></li>
+                <li><a href="#research" class="nav-link">研究テーマ</a></li>
+                <li><a href="#professor" class="nav-link">指導教員</a></li>
+                <li><a href="#news" class="nav-link">ニュース</a></li>
+                <li><a href="#contact" class="nav-link">お問い合わせ</a></li>
+            </ul>
+        </div>
+    </nav>
 
-  <main class="container">
-    <section>
-      <h2>研究キーワード</h2>
-      <ul>
-        <li>ロケット・宇宙科学</li>
-        <li>天文学</li>
-        <li>レーザー物理学</li>
-        <li>応用物理</li>
-        <li>自然・物質科学</li>
-      </ul>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="stars"></div>
+        <div class="stars-layer-2"></div>
+        <div class="hero-content">
+            <h2 class="hero-title">宇宙計測研究室</h2>
+            <p class="hero-subtitle">Space Measurement Laboratory</p>
+            <p class="hero-description">リモートセンシング技術で宇宙・地球を観測する</p>
+        </div>
     </section>
 
-    <section>
-      <h2>研究室の学び</h2>
-      <p>アインシュタインの一般相対性理論は、中性子星・ブラックホールなどの巨大な質量系から「重力波」が放射されることを予言します。重力波は通常の電磁波による天文学では見通せない遥か太古の宇宙を探る格好の手段であることから世界的に注目されています。重力波の検出は太陽地球間の距離が水素原子の100 分の１だけ伸び縮みするような微小な変化を計測することに相当します。この超精密計測を礎とした人工衛星と観測装置の開発を行っています。</p>
+    <!-- Main Content -->
+    <main class="container">
+        <!-- About Section -->
+        <section id="about" class="section about-section">
+            <h2 class="section-title">研究概要</h2>
+            <div class="content-box">
+                <p>
+                    宇宙計測研究室では、人工衛星やセンサーを用いたリモートセンシング技術により、
+                    宇宙空間、大気、地上・海洋などの観測データを取得・解析しています。
+                </p>
+                <p>
+                    地球環境の監視、宇宙天気予報、センサ開発など、理論と実験を組み合わせた
+                    学際的な研究を進めています。
+                </p>
+            </div>
+        </section>
+
+        <!-- Research Themes Section -->
+        <section id="research" class="section research-section">
+            <h2 class="section-title">主な研究テーマ</h2>
+            <div class="research-grid">
+                <div class="research-card">
+                    <h3>リモートセンシング</h3>
+                    <p>衛星センサを利用した地球・宇宙観測</p>
+                </div>
+                <div class="research-card">
+                    <h3>地球観測衛星</h3>
+                    <p>観測衛星データの解析と応用</p>
+                </div>
+                <div class="research-card">
+                    <h3>センサ開発</h3>
+                    <p>新型センサの開発と検証</p>
+                </div>
+                <div class="research-card">
+                    <h3>宇宙環境観測</h3>
+                    <p>大気圏外の環境監視と解析</p>
+                </div>
+                <div class="research-card">
+                    <h3>大気観測</h3>
+                    <p>大気現象の観測と予測</p>
+                </div>
+                <div class="research-card">
+                    <h3>共同研究</h3>
+                    <p>国内外の機関との研究協力</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professor Section -->
+        <section id="professor" class="section professor-section">
+            <h2 class="section-title">指導教員</h2>
+            <div class="professor-card">
+                <div class="professor-info">
+                    <h3>佐藤修一 教授</h3>
+                    <p class="professor-title">Professor Shuuichi Sato</p>
+                    <p class="professor-specialty">
+                        専門分野：リモートセンシング、人工衛星工学、宇宙計測
+                    </p>
+                    <p class="professor-description">
+                        衛星搭載センサの開発から観測データ解析まで、
+                        宇宙計測技術の幅広い分野で活躍しています。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section id="news" class="section news-section">
+            <h2 class="section-title">ニュース</h2>
+            <div class="news-list">
+                <p class="news-placeholder">近日更新予定です</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">お問い合わせ</h2>
+            <div class="contact-content">
+                <p>ご質問やご相談は、お気軽にお問い合わせください。</p>
+                <div class="contact-info">
+                    <p><strong>研究室名：</strong>宇宙計測研究室</p>
+                    <p><strong>指導教員：</strong>佐藤修一 教授</p>
+                    <p><strong>所属：</strong>法政大学 理工学部</p>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section>
-      <h2>社会との接点</h2>
-      <p>「重力波で探る宇宙」というテーマは、我々の宇宙の姿とその誕生のしくみを解き明かすという理学的目標を背景にしています。一方でその実現のためには、観測装置を考案・製作する工学的な手法を駆使します。更には装置を運用してデータを取得し、そのデータを解析するところまで自らの手で行います。これら一連の流れの中でいわゆる「問題解決の方法論」を一貫して体験することができます。</p>
-      <p>我々の宇宙は古代から現代に至るまで天文学をはじめとする様々な方法で調べられてきましたが、未だもって理解されているのはほんの一部分にすぎません。科学的な立場のみならず文化的・哲学的な見地からも宇宙に興味を持ち、宇宙の神秘と魅力を豊かに語り伝えられる人材の育成も大切にしています。</p>
-    </section>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Space Measurement Laboratory, Hosei University. All rights reserved.</p>
+        </div>
+    </footer>
 
-    <section>
-      <h2>主な卒業研究テーマ</h2>
-      <ul>
-        <li>変位雑音フリー干渉計の開発</li>
-        <li>結合共振器のアラインメント制御</li>
-        <li>デジタル干渉計の基礎研究</li>
-        <li>アライメントフリー干渉計の開発</li>
-        <li>ドラッグフリーシミュレータの開発</li>
-        <li>フォーメーションフライトシミュレータの開造</li>
-        <li>重力の逆二乗則の破れの探索</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>リンク</h2>
-      <ul>
-        <li><a href="https://kenkyu-web.hosei.ac.jp/Profiles/23/0002201/profile.html" target="_blank">学術研究データベース（外部）</a></li>
-        <li><a href="https://syllabus.hosei.ac.jp/web/web_search_show.php" target="_blank">WEBシラバス（外部）</a></li>
-      </ul>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <small>© 法政大学 宇宙計測研究室（内容は出典ページに基づき作成）</small>
-  </footer>
+    <script src="js/script.js"></script>
 </body>
 </html>
