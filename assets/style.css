@@ -1,14 +1,14 @@
 /* ========== Global Styles ========== */
 :root {
-    --primary-dark: #0a0e27;
-    --primary-darker: #050812;
-    --accent-blue: #1e3a8a;
-    --accent-purple: #7c3aed;
-    --accent-cyan: #06b6d4;
-    --text-light: #f0f9ff;
-    --text-muted: #cbd5e1;
-    --card-bg: #1a1f3a;
-    --card-border: #2d3a5f;
+    --primary-dark: #030712;      /* より深い宇宙の漆黒 */
+    --primary-darker: #010409;    /* 最深部の黒 */
+    --accent-blue: #1e3a8a;       /* 星雲のディープブルー */
+    --accent-purple: #6d28d9;     /* 神秘的なパープル */
+    --accent-cyan: #38bdf8;       /* 鮮やかな星の輝き（ネオンサイアン） */
+    --text-light: #f8fafc;        /* 視認性の高い白 */
+    --text-muted: #94a3b8;        /* 落ち着いたグレー */
+    --card-bg: rgba(15, 23, 42, 0.65); /* 半透明のSF風カード背景 */
+    --card-border: rgba(56, 189, 248, 0.2); /* サイアンのシースルー枠線 */
 }
 
 * {
@@ -27,6 +27,43 @@ body {
     color: var(--text-light);
     line-height: 1.6;
     overflow-x: hidden;
+    position: relative;
+}
+
+/* サイト全体の後ろで星を光らせるための背景設定 */
+body::before, body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+body::before {
+    background-image: 
+        radial-gradient(1.5px 1.5px at 40px 60px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 120px 150px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 200px 80px, #38bdf8, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 280px 300px, #fff, rgba(0,0,0,0));
+    background-size: 300px 300px;
+    animation: globalTwinkle 6s infinite ease-in-out;
+}
+
+body::after {
+    background-image: 
+        radial-gradient(1px 1px at 70px 200px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 180px 240px, #cbd5e1, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 260px 40px, #6d28d9, rgba(0,0,0,0));
+    background-size: 250px 250px;
+    animation: globalTwinkle 9s infinite ease-in-out 1.5s;
+}
+
+@keyframes globalTwinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.8; }
 }
 
 /* ========== Container ========== */
@@ -41,27 +78,29 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    background: linear-gradient(135deg, rgba(10, 14, 39, 0.95), rgba(5, 8, 18, 0.95));
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--card-border);
+    background: rgba(3, 7, 18, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.15);
     z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
 }
 
 .navbar .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 20px;
+    padding: 1.2rem 20px;
 }
 
 .nav-brand h1 {
-    font-size: 1.8rem;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    font-size: 1.6rem;
+    background: linear-gradient(135deg, var(--text-light), var(--accent-cyan));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     font-weight: 700;
+    letter-spacing: 1px;
 }
 
 .nav-menu {
@@ -76,11 +115,13 @@ body {
     font-weight: 500;
     transition: all 0.3s ease;
     position: relative;
+    font-size: 0.95rem;
 }
 
 .nav-link:hover,
 .nav-link.active {
     color: var(--accent-cyan);
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
 }
 
 .nav-link::after {
@@ -90,7 +131,8 @@ body {
     left: 0;
     width: 0;
     height: 2px;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    background: var(--accent-cyan);
+    box-shadow: 0 0 8px var(--accent-cyan);
     transition: width 0.3s ease;
 }
 
@@ -101,66 +143,31 @@ body {
 
 /* ========== Hero Section ========== */
 .hero {
-    margin-top: 80px;
-    padding: 120px 20px;
-    background: linear-gradient(135deg, var(--primary-dark), var(--accent-blue));
+    margin-top: 0;
+    padding: 180px 20px 140px 20px;
+    /* 星雲（ネビュラ）をイメージしたグラデーションバックグラウンド */
+    background: radial-gradient(circle at 70% 30%, rgba(109, 40, 217, 0.25), transparent 50%),
+                radial-gradient(circle at 20% 70%, rgba(30, 58, 138, 0.3), transparent 60%),
+                var(--primary-darker);
     position: relative;
     overflow: hidden;
-    min-height: 600px;
+    min-height: 75vh;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-/* Animated Stars Background */
-@keyframes twinkle {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
-}
-
-.stars {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-image: 
-        radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 60px 70px, #fff, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 50px 50px, #fff, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 90px 10px, #fff, rgba(0,0,0,0));
-    background-repeat: repeat;
-    background-size: 200px 200px;
-    animation: twinkle 5s infinite;
-}
-
-.stars-layer-2 {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-image: 
-        radial-gradient(1px 1px at 80px 10px, #fff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 90px 30px, #eee, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 130px 60px, #fff, rgba(0,0,0,0));
-    background-repeat: repeat;
-    background-size: 200px 200px;
-    animation: twinkle 7s infinite 1s;
 }
 
 .hero-content {
     position: relative;
     z-index: 10;
     text-align: center;
-    animation: fadeInUp 1s ease-out;
+    animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(40px);
     }
     to {
         opacity: 1;
@@ -169,228 +176,232 @@ body {
 }
 
 .hero-title {
-    font-size: 4rem;
+    font-size: 4.5rem;
     font-weight: 700;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple), var(--accent-cyan));
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan), #a78bfa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: 0 0 30px rgba(6, 182, 212, 0.3);
+    letter-spacing: 3px;
+    filter: drop-shadow(0 2px 20px rgba(56, 189, 248, 0.4));
 }
 
 .hero-subtitle {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: var(--accent-cyan);
-    margin-bottom: 1rem;
-    font-weight: 300;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
 }
 
 .hero-description {
-    font-size: 1.1rem;
-    color: var(--text-muted);
+    font-size: 1.2rem;
+    color: var(--text-light);
+    font-weight: 300;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 2rem;
+    border-radius: 50px;
+    display: inline-block;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ========== Sections ========== */
 .section {
-    padding: 80px 20px;
+    padding: 100px 20px;
+    position: relative;
 }
 
 .section-title {
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
+    font-size: 2.2rem;
+    margin-bottom: 3.5rem;
     text-align: center;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    background: linear-gradient(135deg, #fff, var(--text-muted));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     font-weight: 700;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 2px;
+    background: var(--accent-cyan);
+    box-shadow: 0 0 10px var(--accent-cyan);
 }
 
 /* ========== About Section ========== */
-.about-section {
-    background: linear-gradient(135deg, rgba(10, 14, 39, 0.8), rgba(30, 58, 138, 0.2));
-}
-
 .content-box {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 15px;
-    padding: 3rem;
-    max-width: 800px;
+    border-radius: 16px;
+    padding: 3.5rem;
+    max-width: 850px;
     margin: 0 auto;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(6, 182, 212, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
 .content-box p {
     font-size: 1.1rem;
-    line-height: 1.8;
+    line-height: 1.9;
     margin-bottom: 1.5rem;
-    color: var(--text-muted);
-}
-
-.content-box p:last-child {
-    margin-bottom: 0;
+    color: rgba(241, 245, 249, 0.9);
 }
 
 /* ========== Research Section ========== */
-.research-section {
-    background: linear-gradient(135deg, rgba(5, 8, 18, 0.8), rgba(124, 58, 237, 0.1));
-}
-
 .research-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
-    margin-top: 2rem;
 }
 
 .research-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 2rem;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
+    border-radius: 14px;
+    padding: 2.5rem 2rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.research-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(124, 58, 237, 0.1));
-    transition: left 0.3s ease;
-}
-
+/* ホバー時のコズミックな発光エフェクト */
 .research-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--accent-cyan);
-    box-shadow: 0 12px 40px rgba(6, 182, 212, 0.2);
-}
-
-.research-card:hover::before {
-    left: 100%;
+    transform: translateY(-8px);
+    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 15px 40px rgba(56, 189, 248, 0.25);
+    background: rgba(20, 30, 60, 0.7);
 }
 
 .research-card h3 {
     font-size: 1.3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     color: var(--accent-cyan);
-    position: relative;
-    z-index: 1;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.research-card:hover h3 {
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
 
 .research-card p {
     color: var(--text-muted);
-    position: relative;
-    z-index: 1;
+    font-size: 0.95rem;
 }
 
 /* ========== Professor Section ========== */
-.professor-section {
-    background: linear-gradient(135deg, rgba(10, 14, 39, 0.8), rgba(30, 58, 138, 0.2));
-}
-
 .professor-card {
-    background: var(--card-bg);
-    border: 2px solid var(--accent-purple);
-    border-radius: 15px;
-    padding: 3rem;
-    max-width: 600px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(109, 40, 217, 0.15));
+    border: 1px solid rgba(109, 40, 217, 0.4);
+    border-radius: 16px;
+    padding: 3.5rem;
+    max-width: 700px;
     margin: 0 auto;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 20px 50px rgba(109, 40, 217, 0.15);
 }
 
 .professor-info h3 {
     font-size: 1.8rem;
-    color: var(--accent-cyan);
-    margin-bottom: 0.5rem;
+    color: #ffffff;
+    margin-bottom: 0.3rem;
     font-weight: 700;
 }
 
 .professor-title {
     font-size: 1rem;
-    color: var(--accent-purple);
-    margin-bottom: 1.5rem;
+    color: #a78bfa;
+    margin-bottom: 1.8rem;
     font-weight: 500;
+    letter-spacing: 1px;
 }
 
 .professor-specialty {
-    font-size: 0.95rem;
-    color: var(--text-light);
-    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--accent-cyan);
+    margin-bottom: 1.2rem;
+    font-weight: 500;
 }
 
 .professor-description {
     font-size: 1rem;
-    color: var(--text-muted);
+    color: rgba(226, 232, 240, 0.9);
     line-height: 1.8;
 }
 
 /* ========== News Section ========== */
-.news-section {
-    background: linear-gradient(135deg, rgba(5, 8, 18, 0.8), rgba(124, 58, 237, 0.1));
-}
-
 .news-list {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 2rem;
-    max-width: 800px;
+    border-radius: 14px;
+    padding: 2.5rem;
+    max-width: 850px;
     margin: 0 auto;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .news-placeholder {
     text-align: center;
     color: var(--text-muted);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
 }
 
 /* ========== Contact Section ========== */
 .contact-section {
-    background: linear-gradient(135deg, var(--primary-darker), var(--accent-blue));
-    padding: 80px 20px;
-    border-top: 1px solid var(--card-border);
+    padding: 100px 20px;
+    background: radial-gradient(circle at 50% 100%, rgba(30, 58, 138, 0.2), transparent 70%);
 }
 
 .contact-content {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 3rem;
-    max-width: 800px;
+    border-radius: 16px;
+    padding: 3.5rem;
+    max-width: 850px;
     margin: 0 auto;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     text-align: center;
 }
 
 .contact-content p {
-    color: var(--text-muted);
+    color: var(--text-light);
     font-size: 1.1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
 }
 
 .contact-info {
     text-align: left;
-    background: rgba(6, 182, 212, 0.05);
-    border-left: 3px solid var(--accent-cyan);
-    padding: 1.5rem;
-    border-radius: 8px;
+    background: rgba(3, 7, 18, 0.5);
+    border-left: 4px solid var(--accent-cyan);
+    padding: 2rem;
+    border-radius: 0 12px 12px 0;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
 }
 
 .contact-info p {
-    margin-bottom: 0.8rem;
-    color: var(--text-light);
+    margin-bottom: 1rem;
+    color: rgba(226, 232, 240, 0.9);
+    font-size: 1rem;
 }
 
 .contact-info p:last-child {
@@ -399,69 +410,80 @@ body {
 
 .contact-info strong {
     color: var(--accent-cyan);
+    margin-right: 0.5rem;
 }
 
 /* ========== Footer ========== */
 .footer {
     background: var(--primary-darker);
-    border-top: 1px solid var(--card-border);
-    padding: 2rem 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2.5rem 20px;
     text-align: center;
     color: var(--text-muted);
+    font-size: 0.9rem;
 }
 
 /* ========== Responsive Design ========== */
 @media (max-width: 768px) {
+    .navbar .container {
+        padding: 1rem 20px;
+    }
+    
+    .nav-brand h1 {
+        font-size: 1.4rem;
+    }
+
     .nav-menu {
-        gap: 1rem;
-        font-size: 0.9rem;
+        gap: 1.2rem;
+    }
+
+    .nav-link {
+        font-size: 0.85rem;
     }
 
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
     }
 
     .hero-subtitle {
         font-size: 1.2rem;
     }
 
+    .hero-description {
+        font-size: 1rem;
+        padding: 0.5rem 1.5rem;
+    }
+
     .section-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .content-box,
     .professor-card,
-    .news-list {
-        padding: 2rem;
-    }
-
-    .research-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .navbar .container {
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    .nav-brand h1 {
-        font-size: 1.3rem;
-    }
-
-    .nav-menu {
-        width: 100%;
-        justify-content: space-around;
+    .contact-content {
+        padding: 2.5rem 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
+    .navbar .container {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .nav-menu {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0;
+    }
+
     .hero {
-        padding: 80px 20px;
-        min-height: 400px;
+        padding-top: 140px;
+        min-height: 60vh;
     }
 
     .hero-title {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
     }
 
     .hero-subtitle {
@@ -469,22 +491,10 @@ body {
     }
 
     .section {
-        padding: 50px 20px;
-    }
-
-    .section-title {
-        font-size: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .nav-link {
-        font-size: 0.9rem;
+        padding: 60px 20px;
     }
 
     .contact-info {
-        text-align: center;
-        border-left: none;
-        border-top: 3px solid var(--accent-cyan);
-        padding-top: 1.5rem;
+        padding: 1.5rem 1rem;
     }
 }
