@@ -204,25 +204,29 @@ body::after {
 
 /* 🌟 メインタイトル：宇宙計測研究室 */
 .hero-title {
-    font-size: 5.5rem;          /* ⭕ サイズをガツンと大きく！ */
+    font-size: 5.5rem;
     font-weight: 700;
     margin-bottom: 0.8rem;
-    background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan), #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 4px;        /* 文字の間隔を広げて堂々とした印象に */
+    
+    /* ⭕ 変更点：グラデーションをなくし、文字色を「完全な白（#ffffff）」に変更 */
+    color: #ffffff;
+    -webkit-text-fill-color: initial; /* グラデーション用の設定をリセット */
+    
+    letter-spacing: 4px;
     filter: drop-shadow(0 2px 20px rgba(56, 189, 248, 0.4));
 }
 
-/* 🌟 サブタイトル：Space Measurement Laboratory */
+/* 🌟 サブタイトル：Spacetime Metrology Laboratory */
 .hero-subtitle {
-    font-size: 2.0rem;          /* ⭕ 英語もパッと目立つサイズにアップ！ */
-    color: var(--accent-cyan);
+    font-size: 2.0rem;
+    
+    /* ⭕ 変更点：サイアンブルーから「透き通るような白（#f8fafc）」に変更 */
+    color: #f8fafc;
+    
     margin-bottom: 2.0rem;
     font-weight: 500;
     letter-spacing: 5px;
-    text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.5); /* 文字の周りの青い発光エフェクトは残して視認性をキープ */
 }
 /* ========== Sections ========== */
 .section {
