@@ -109,14 +109,19 @@ body::after {
     padding: 1.2rem 20px;
 }
 
+/* ⭕ 修正後 */
 .nav-brand h1 {
     font-size: 1.6rem;
-    background: linear-gradient(135deg, var(--text-light), var(--accent-cyan));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    
+    /* 青のグラデーションをなくし、完全な白（#ffffff）に統一します */
+    color: #ffffff;
+    -webkit-text-fill-color: initial; /* グラデーション用の設定をリセット */
+    
     font-weight: 700;
     letter-spacing: 1px;
+    
+    /* ほんの少しだけ文字の後ろを光らせて、視認性を高めるSF風エフェクトを追加 */
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.2); 
 }
 
 .nav-menu {
