@@ -151,57 +151,87 @@
             height = canvas.height = window.innerHeight;
         });
 
-        const mouse = { x: null, y: null, targetX: null, targetY: null, vx: 0, vy: 0 };
+        // 発生した波紋たちを記録する配列
+        const ripples = [];
         
-        // マウスの動きを感知
+        // 前回のマウス位置を記録（マウスが動いた距離を測るため）
+        let lastMouseX = null;
+        let lastMouseY = null;
+
+        // マウスが動いたときに波紋を発生させる
         window.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
-            mouse.targetX = e.clientX - rect.left;
-            mouse.targetY = e.clientY - rect.top;
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            if (lastMouseX !== null && lastMouseY !== null) {
+                // マウスが一定距離以上動いたら新しい波紋を作る（たくさん出すぎないように調整）
+                const distMoved = Math.hypot(mouseX - lastMouseX, mouseY - lastMouseY);
+                if (distMoved > 15) { 
+                    ripples.push({
+                        x: mouseX,
+                        y: mouseY,
+                        radius: 0,          // スタート時は半径0
+                        maxRadius: 300,     // どこまで広がるか
+                        speed: 4,           // 波が広がるスピード
+                        opacity: 0.6        // 初期設定の濃さ
+                    });
+                    lastMouseX = mouseX;
+                    lastMouseY = mouseY;
+                }
+            } else {
+                lastMouseX = mouseX;
+                lastMouseY = mouseY;
+            }
         });
 
         window.addEventListener('mouseleave', () => {
-            mouse.targetX = null;
-            mouse.targetY = null;
+            lastMouseX = null;
+            lastMouseY = null;
         });
 
-        // 波打つ格子の設定
-        const gridGap = 40; // 格子の細かさ（小さいほど細かくなる）
+        const gridGap = 40; // 格子の細かさ
         let time = 0;
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
             time += 0.02;
 
-            // マウスの滑らかな移動（慣性）
-            if (mouse.targetX !== null) {
-                mouse.vx += (mouse.targetX - mouse.x) * 0.1;
-                mouse.vy += (mouse.targetY - mouse.y) * 0.1;
-            }
-            mouse.vx *= 0.85;
-            mouse.vy *= 0.85;
-            mouse.x += mouse.vx;
-            mouse.y += mouse.vy;
+            // 1. 波紋のステータスを更新（外側に広げて、徐々に薄くする）
+            for (let i = ripples.length - 1; i >= 0; i--) {
+                const r = ripples[i];
+                r.radius += r.speed; // 半径を大きくしていく
+                r.opacity -= 0.01;   // 徐々に消えていく
 
-            // 格子（網の目）を描画
-            ctx.strokeStyle = 'rgba(56, 189, 248, 0.15)'; // 格子の色（サイアンブルーの薄い光）
+                // 画面外（maxRadius）まで広がりきった、または完全に透明になったら配列から消す
+                if (r.radius > r.maxRadius || r.opacity <= 0) {
+                    ripples.splice(i, 1);
+                }
+            }
+
+            // 基本の格子の色
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.15)'; 
             ctx.lineWidth = 1;
 
-            // 横線を描く
+            // 2. 横線を描く
             for (let y = 0; y < height; y += gridGap) {
                 ctx.beginPath();
                 for (let x = 0; x < width; x += 10) {
                     let dy = 0;
-                    // マウスとの距離を計算して、近くを波打たせる
-                    if (mouse.x !== null) {
-                        const dist = Math.hypot(x - mouse.x, y - mouse.y);
-                        if (dist < 250) {
-                            // 参考サイトのような弾む波（数式で制御）
-                            dy = Math.sin(dist * 0.05 - time * 5) * (250 - dist) * 0.15;
+
+                    // すべての波紋の影響を計算
+                    ripples.forEach(r => {
+                        const dist = Math.hypot(x - r.x, y - r.y);
+                        // 現在の波の「フロントライン（先端）」にいるかチェック
+                        const waveFront = Math.abs(dist - r.radius);
+                        if (waveFront < 40) {
+                            // 先端部分をサイン波で上下に揺らす（広がっていく波の表現）
+                            dy += Math.sin((dist - r.radius) * 0.1) * 20 * r.opacity;
                         }
-                    }
-                    // 背景のゆったりした自然な宇宙の揺らぎもプラス
-                    dy += Math.sin(x * 0.01 + time) * 5;
+                    });
+
+                    // 宇宙のゆったりした自然な揺らぎもブレンド
+                    dy += Math.sin(x * 0.01 + time) * 3;
 
                     if (x === 0) ctx.moveTo(x, y + dy);
                     else ctx.lineTo(x, y + dy);
@@ -209,18 +239,21 @@
                 ctx.stroke();
             }
 
-            // 縦線を描く
+            // 3. 縦線を描く
             for (let x = 0; x < width; x += gridGap) {
                 ctx.beginPath();
                 for (let y = 0; y < height; y += 10) {
                     let dx = 0;
-                    if (mouse.x !== null) {
-                        const dist = Math.hypot(x - mouse.x, y - mouse.y);
-                        if (dist < 250) {
-                            dx = Math.sin(dist * 0.05 - time * 5) * (250 - dist) * 0.15;
+
+                    ripples.forEach(r => {
+                        const dist = Math.hypot(x - r.x, y - r.y);
+                        const waveFront = Math.abs(dist - r.radius);
+                        if (waveFront < 40) {
+                            dx += Math.sin((dist - r.radius) * 0.1) * 20 * r.opacity;
                         }
-                    }
-                    dx += Math.cos(y * 0.01 + time) * 5;
+                    });
+
+                    dx += Math.cos(y * 0.01 + time) * 3;
 
                     if (y === 0) ctx.moveTo(x + dx, y);
                     else ctx.lineTo(x + dx, y);
