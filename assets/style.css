@@ -161,14 +161,39 @@ body::after {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    /* 🌟 追加：この指定で、JSからこの背景全体をぐにゃぐにゃと波打たせます */
-    filter: url(#liquid-wave);
-    will-change: filter;
 }
 
-/* 🌟 Canvasはグリッド線を描くものだったので、今回は非表示（または削除）にします */
-#waveCanvas {
+/* 🌟 追加：外側に広がるリアルな波紋エフェクトのコア */
+.ripple-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    mix-blend-mode: overlay; /* 背景画像と滑らかにブレンドさせます */
+    opacity: 0;
+    transition: opacity 0.3s;
+    
+    /* JSから渡されるマウスの座標（--x, --y）を中心に、円形の波紋をCSSで作ります */
+    background: radial-gradient(
+        circle 150px at var(--x) var(--y),
+        transparent 0%,
+        rgba(56, 189, 248, 0.3) 40%,  /* 波紋の山（サイアンブルー） */
+        rgba(3, 7, 18, 0.8) 50%,     /* 波紋の谷（影） */
+        rgba(56, 189, 248, 0.5) 60%,  /* 次の波の山 */
+        transparent 70%
+    );
+}
+
+/* マウスが動いているときだけ波紋を表示 */
+.hero:hover .ripple-overlay {
+    opacity: 1;
+}
+
+/* 以前の古いCanvas用設定が残っていれば以下に上書き */
+#waveCanvas, #rippleCanvas {
     display: none;
 }
 /* ========== Hero Content (文字全体のエリア) ========== */
