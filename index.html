@@ -8,6 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <defs>
+            <filter id="liquid-wave">
+                <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="1" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" id="liquid-map" />
+            </filter>
+        </defs>
+    </svg>
 
     <nav class="navbar">
         <div class="container">
@@ -140,117 +148,65 @@
 
     <script src="js/script.js"></script>
     <script>
-        const canvas = document.getElementById('waveCanvas');
-        const ctx = canvas.getContext('2d');
+        const displacementMap = document.getElementById('liquid-map');
+        const turbulence = document.querySelector('feTurbulence');
 
-        let width = canvas.width = window.innerWidth;
-        let height = canvas.height = window.innerHeight;
+        let mouseX = 0;
+        let mouseY = 0;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
 
-        window.addEventListener('resize', () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        });
+        // 波の強さと状態管理
+        let waveScale = 0;
+        let targetScale = 0;
+        let waveTime = 0;
 
-        const ripples = [];
-        let lastMouseX = null;
-        let lastMouseY = null;
-
+        // マウスが動いたら、移動速度に応じて波の強さ（targetScale）を上げる
         window.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
 
-            if (lastMouseX !== null && lastMouseY !== null) {
-                const distMoved = Math.hypot(mouseX - lastMouseX, mouseY - lastMouseY);
-                if (distMoved > 15) { 
-                    ripples.push({
-                        x: mouseX,
-                        y: mouseY,
-                        radius: 0,          
-                        maxRadius: 1200,     
-                        speed: 3,           
-                        opacity: 0.8        
-                    });
-                    lastMouseX = mouseX;
-                    lastMouseY = mouseY;
-                }
-            } else {
-                lastMouseX = mouseX;
-                lastMouseY = mouseY;
+            if (lastMouseX !== 0 && lastMouseY !== 0) {
+                const speed = Math.hypot(mouseX - lastMouseX, mouseY - lastMouseY);
+                // マウスの動く速度に合わせて波の最大強度を決定（最大60pxの歪み）
+                targetScale = Math.min(speed * 0.8, 60);
             }
+    
+            lastMouseX = mouseX;
+            lastMouseY = mouseY;
         });
 
+        // マウスが画面外に出たら波を引かせる
         window.addEventListener('mouseleave', () => {
-            lastMouseX = null;
-            lastMouseY = null;
+            targetScale = 0;
         });
 
-        const gridGap = 40; 
-        let time = 0;
+        function animateLiquid() {
+            waveTime += 0.03; // 波の揺らめく速度
 
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            time += 0.02;
-
-            for (let i = ripples.length - 1; i >= 0; i--) {
-                const r = ripples[i];
-                r.radius += r.speed; 
-                r.opacity -= 0.003;   
-
-                if (r.radius > r.maxRadius || r.opacity <= 0) {
-                    ripples.splice(i, 1);
-                }
+        // 現在の波の強さを、目標の強さに滑らかに近づける（じわっと動くエフェクト）
+            waveScale += (targetScale - waveScale) * 0.05;
+    
+        // マウスが止まっていても、ほんの少し（常時1〜2pxくらい）余韻で揺らす
+            if (targetScale > 0.1) {
+                targetScale *= 0.96; // じわじわと波を減衰させる
+            } else {
+                targetScale = 0;
             }
 
-            ctx.strokeStyle = 'rgba(56, 189, 248, 0.15)'; 
-            ctx.lineWidth = 1;
+    // SVGフィルターのパラメータをリアルタイムに書き換えて画像を歪ませる
+    displacementMap.setAttribute('scale', waveScale);
+    
+    // 縦波と横波の細かさを時間経過で変化させる
+    const baseFreqX = 0.01 + Math.sin(waveTime) * 0.002;
+    const baseFreqY = 0.015 + Math.cos(waveTime) * 0.002;
+    turbulence.setAttribute('baseFrequency', `${baseFreqX} ${baseFreqY}`);
 
-            for (let y = 0; y < height; y += gridGap) {
-                ctx.beginPath();
-                for (let x = 0; x < width; x += 10) {
-                    let dy = 0;
+    requestAnimationFrame(animateLiquid);
+    }
 
-                    ripples.forEach(r => {
-                        const dist = Math.hypot(x - r.x, y - r.y);
-                        const waveFront = Math.abs(dist - r.radius);
-                        if (waveFront < 40) {
-                            dy += Math.sin((dist - r.radius) * 0.1) * 40 * r.opacity;
-                        }
-                    });
-
-                    dy += Math.sin(x * 0.01 + time) * 3;
-
-                    if (x === 0) ctx.moveTo(x, y + dy);
-                    else ctx.lineTo(x, y + dy);
-                }
-                ctx.stroke();
-            }
-
-            for (let x = 0; x < width; x += gridGap) {
-                ctx.beginPath();
-                for (let y = 0; y < height; y += 10) {
-                    let dx = 0;
-
-                    ripples.forEach(r => {
-                        const dist = Math.hypot(x - r.x, y - r.y);
-                        const waveFront = Math.abs(dist - r.radius);
-                        if (waveFront < 40) {
-                            dx += Math.sin((dist - r.radius) * 0.1) * 40 * r.opacity;
-                        }
-                    });
-
-                    dx += Math.cos(y * 0.01 + time) * 3;
-
-                    if (y === 0) ctx.moveTo(x + dx, y);
-                    else ctx.lineTo(x + dx, y);
-                }
-                ctx.stroke();
-            }
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
+     // アニメーション開始
+    animateLiquid();
     </script>
 </body>
 </html>
