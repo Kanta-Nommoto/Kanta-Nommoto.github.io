@@ -148,13 +148,8 @@ body::after {
 .hero {
     margin-top: 0;
     padding: 220px 20px 180px 20px;
-    background: linear-gradient(rgba(3, 7, 18, 0.2), rgba(1, 4, 9, 0.5)), 
-                url('./3D94AA37-6E8C-4D72-9820-746359908CA0_1_105_c.jpeg');
-    background-size: contain;        
-    background-position: center top; 
-    background-repeat: no-repeat;
-    background-attachment: scroll;   
-    
+    /* CSS側のbackgroundはSVGに移行したので透明にします */
+    background: #030712;   
     position: relative;
     overflow: hidden;
     min-height: 85vh;                
@@ -163,39 +158,34 @@ body::after {
     justify-content: center;
 }
 
-/* 🌟 追加：外側に広がるリアルな波紋エフェクトのコア */
-.ripple-overlay {
+/* 🌟 追加：SVG背景画像を画面いっぱいに引き伸ばす設定 */
+.hero-bg-svg {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
+    z-index: 1;
+    object-fit: cover;
+}
+
+/* 🌟 追加：文字を読みやすくするために重ねる暗がりのレイヤー */
+.hero-overlay-dark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(3, 7, 18, 0.3), rgba(1, 4, 9, 0.6));
     z-index: 2;
-    mix-blend-mode: overlay; /* 背景画像と滑らかにブレンドさせます */
-    opacity: 0;
-    transition: opacity 0.3s;
-    
-    /* JSから渡されるマウスの座標（--x, --y）を中心に、円形の波紋をCSSで作ります */
-    background: radial-gradient(
-        circle 150px at var(--x) var(--y),
-        transparent 0%,
-        rgba(56, 189, 248, 0.3) 40%,  /* 波紋の山（サイアンブルー） */
-        rgba(3, 7, 18, 0.8) 50%,     /* 波紋の谷（影） */
-        rgba(56, 189, 248, 0.5) 60%,  /* 次の波の山 */
-        transparent 70%
-    );
+    pointer-events: none; /* マウスをすり抜けさせる */
 }
 
-/* マウスが動いているときだけ波紋を表示 */
-.hero:hover .ripple-overlay {
-    opacity: 1;
+/* 古いCanvasやオーバーレイの設定が残っていれば非表示にします */
+#waveCanvas, #rippleCanvas, .ripple-overlay {
+    display: none !important;
 }
 
-/* 以前の古いCanvas用設定が残っていれば以下に上書き */
-#waveCanvas, #rippleCanvas {
-    display: none;
-}
 /* ========== Hero Content (文字全体のエリア) ========== */
 .hero-content {
     position: relative;
